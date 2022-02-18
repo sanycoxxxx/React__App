@@ -4,10 +4,22 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+const elem1 = <h2>Hello World of Reacts</h2>;
+
+const elem = React.createElement('h1', {className: 'hello'}, 'Hello World of Reacts');
+
+const element = <div className="">
+<h2>Hello World of Reacts</h2>
+<input type="text" />
+<button type='submit'>Click</button>
+
+</div>
+ 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  element,
+  // <React.StrictMode>
+  //   <App />
+  // </React.StrictMode>,
   document.getElementById('root')
 );
 
