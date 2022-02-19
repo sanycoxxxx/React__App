@@ -8,6 +8,11 @@ import EmployeesList from "./components/employees-list/employees-list";
 import EmployeesAddForm from "./components/employees-add-form/employees-add-form";
 
 function App() {
+  const data = [
+{name: "J" , salary: 800 , increase: false, id: 1},
+{name: "s" , salary: 5000 , increase: true, id: 2},
+{name: "r" , salary: 3000 , increase: false, id: 3}
+  ];
   return (
     <div className="App">
       <header className="App-header">
@@ -17,7 +22,7 @@ function App() {
           <AppFilter/>
         </div>
         <div className="">
-           <EmployeesList/>
+           <EmployeesList data={data}/>
         </div>
         <div className="">
           <EmployeesAddForm/>
