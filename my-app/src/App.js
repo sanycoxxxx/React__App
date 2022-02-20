@@ -8,63 +8,51 @@ import EmployeesList from "./components/employees-list/employees-list";
 import EmployeesAddForm from "./components/employees-add-form/employees-add-form";
 import { getAllByText } from "@testing-library/react";
 
-class WhoAmI extends Component {
-    constructor (props) {
-      super(props);
-      this.state = {
-        years: 25 
-      }
+
+class App extends Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [
+        {name: "James" , salary: 800 , increase: false, favourite: false, id: 1},
+        {name: "Sergey" , salary: 5000 , increase: true, favourite: true, id: 2},
+        {name: "Roman" , salary: 3000 , increase: false, favourite: false, id: 3}
+      ]
+    }
   }
 
-  NextYears = () => {
-  console.log('+++');
-  this.setState(state => ({
-    years: state.years + 1
-  }))
+  deleteItem = (id) => {
+   this.setState(({data}) => {
+    return {data: data.filter(item => item.id !== id)}
+   })
   }
+
 
   render() {
-      const {name, surname, link} = this.props;
-      return (
-          <div>
-            <div>
-              <button onClick={this.NextYears}>+++</button> 
-            </div>
-              Hello, my name is {name}, surname - {surname}, my sites - {link}, my age - {this.state.years}
-          </div>
-      )
-  }
-}
+  const{data} = this.state;
 
-
-
-function App() {
-  const data = [
-{name: "James" , salary: 800 , increase: false, id: 1},
-{name: "Sergey" , salary: 5000 , increase: true, id: 2},
-{name: "Roman" , salary: 3000 , increase: false, id: 3}
-  ];
-  return (
-    <div className="App">
-      <header className="App-header">
-        <AppInfo/>
-        <div className="">
-          <SearchPanel/>
-          <AppFilter/>
-        </div>
-        <div className="">
-           <EmployeesList data={data}/>
-        </div>
-        <div className="">
-          <EmployeesAddForm/>
-         <WhoAmI name='Alex' surname="Adamovych" link='Facebook'/>
-         <WhoAmI name='Ax' surname="Adh" link='Faceb'/>
-        </div>
-      </header>
+        return (
+          <div className="App">
+            <header className="App-header">
+              <AppInfo/>
+              <div>
+                <SearchPanel/>
+                <AppFilter/>
+              </div>
+              <div>
+                 <EmployeesList 
+                 data={data}
+                 onDelete={this.deleteItem}/>
+              </div>
+              <div >
+                <EmployeesAddForm/>
+              </div>
+            </header>
+            
       
-
-    </div>
-  );
+          </div>
+        );
+  }
 }
 
 export default App;
