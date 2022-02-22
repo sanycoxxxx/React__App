@@ -1,12 +1,10 @@
 import {Component} from "react"
-import logo from './logo.svg';
 import './App.css';
 import AppInfo from "./components/app-info/app-info";
 import SearchPanel from "./components/search-panel/search-panel";
 import AppFilter from "./components/app-filters/app-filter";
 import EmployeesList from "./components/employees-list/employees-list";
 import EmployeesAddForm from "./components/employees-add-form/employees-add-form";
-import { getAllByText } from "@testing-library/react";
 
 
 class App extends Component{
@@ -23,29 +21,40 @@ class App extends Component{
     this.all = this.state.data.length
   }
  
-onRise = (id) => {
-  console.log(`rise in ${id}`)
-}
-
-onIncrease = (id) => {
-  console.log(`increase in ${id}`)
-}
-
-addItem = (name, salary) => {
-  const newItem = {
-    name,
-    salary,
-    increase: false,
-    rise: false,
-    id: this.maxId++
+  onRise = (id) => {
+    this.setState(({data}) => {
+      const  index = data.findIndex(elem => elem.id === id );
+      const old = data[index];
+      const newObj = {...old, rise: !old.rise};
+      const newArr = [ ...data.slice(0, index), newObj, ...data.slice(index + 1)];
+      return {data : newArr}
+    }) 
   }
+
+  onIncrease = (id) => 
   this.setState(({data}) => {
-    const newArr = [...data, newItem];
-    return {
-    data: newArr
+    const  index = data.findIndex(elem => elem.id === id );
+    const old = data[index];
+    const newObj = {...old, increase: !old.increase};
+    const newArr = [ ...data.slice(0, index), newObj, ...data.slice(index + 1)];
+    return {data : newArr}
+  }) 
+
+  addItem = (name, salary) => {
+    const newItem = {
+      name,
+      salary,
+      increase: false,
+      rise: false,
+      id: this.maxId++
     }
-  })
-} 
+    this.setState(() => {
+      const newArr = [...this.state.data, newItem];
+      return {
+      data: newArr
+      }
+    })
+  } 
 
   deleteItem = (id) => {
    this.setState(({data}) => {
@@ -55,13 +64,16 @@ addItem = (name, salary) => {
 
 
   render() {
+  const amountAll = this.state.data.length;
+  const amountRise = this.state.data.filter(item => item.rise).length;
   const{data} = this.state;
 
         return (
           <div className="App">
             <header className="App-header">
               <AppInfo
-              amountItem={this.all}/>
+              amountAll={amountAll}
+              amountRise={amountRise}/>
               <div>
                 <SearchPanel/>
                 <AppFilter/>
