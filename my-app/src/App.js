@@ -14,12 +14,38 @@ class App extends Component{
     super(props);
     this.state = {
       data: [
-        {name: "James" , salary: 800 , increase: false, favourite: false, id: 1},
-        {name: "Sergey" , salary: 5000 , increase: true, favourite: true, id: 2},
-        {name: "Roman" , salary: 3000 , increase: false, favourite: false, id: 3}
+        {name: "James" , salary: 800 , increase: false, rise: true, id: 1},
+        {name: "Sergey" , salary: 5000 , increase: true, rise: false, id: 2},
+        {name: "Roman" , salary: 3000 , increase: false, rise: false, id: 3}
       ]
     }
+    this.maxId = 4;
+    this.all = this.state.data.length
   }
+ 
+onRise = (id) => {
+  console.log(`rise in ${id}`)
+}
+
+onIncrease = (id) => {
+  console.log(`increase in ${id}`)
+}
+
+addItem = (name, salary) => {
+  const newItem = {
+    name,
+    salary,
+    increase: false,
+    rise: false,
+    id: this.maxId++
+  }
+  this.setState(({data}) => {
+    const newArr = [...data, newItem];
+    return {
+    data: newArr
+    }
+  })
+} 
 
   deleteItem = (id) => {
    this.setState(({data}) => {
@@ -34,7 +60,8 @@ class App extends Component{
         return (
           <div className="App">
             <header className="App-header">
-              <AppInfo/>
+              <AppInfo
+              amountItem={this.all}/>
               <div>
                 <SearchPanel/>
                 <AppFilter/>
@@ -42,10 +69,14 @@ class App extends Component{
               <div>
                  <EmployeesList 
                  data={data}
-                 onDelete={this.deleteItem}/>
+                 onDelete={this.deleteItem}
+                 onRise = {this.onRise}
+                 onIncrease = {this.onIncrease}/>
               </div>
               <div >
-                <EmployeesAddForm/>
+                <EmployeesAddForm
+                onAdd={this.addItem}/>
+
               </div>
             </header>
             
