@@ -40,12 +40,14 @@ class EmployeesAddForm extends Component {
             <form
                 onSubmit={this.onSubmit}
                 className="add-form d-flex">
-                <input onChange={this.onValueChange} type="text"
+                <input minLength={2}
+                    onChange={this.onValueChange} type="text"
                     className="form-control new-post-label"
                     name= "name"
                     value={name}
                     placeholder="Как его зовут?" />
-                <input onChange={this.onValueChange} type="number"
+                <input minLength={2}
+                    onChange={this.onValueChange} type="number"
                     className="form-control new-post-label"
                     name= "salary"
                     value={salary}

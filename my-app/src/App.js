@@ -21,24 +21,18 @@ class App extends Component{
     this.all = this.state.data.length
   }
  
-  onRise = (id) => {
-    this.setState(({data}) => {
-      const  index = data.findIndex(elem => elem.id === id );
-      const old = data[index];
-      const newObj = {...old, rise: !old.rise};
-      const newArr = [ ...data.slice(0, index), newObj, ...data.slice(index + 1)];
-      return {data : newArr}
-    }) 
+  onProp = (id, prop) => {
+   this.setState(({data}) => ({
+     data: data.map(item => {
+       if (item.id==id) {
+         return {...item, [prop]: !item[prop]}
+       }
+       return item;
+      }) 
+   }))
   }
 
-  onIncrease = (id) => 
-  this.setState(({data}) => {
-    const  index = data.findIndex(elem => elem.id === id );
-    const old = data[index];
-    const newObj = {...old, increase: !old.increase};
-    const newArr = [ ...data.slice(0, index), newObj, ...data.slice(index + 1)];
-    return {data : newArr}
-  }) 
+  
 
   addItem = (name, salary) => {
     const newItem = {
@@ -82,8 +76,8 @@ class App extends Component{
                  <EmployeesList 
                  data={data}
                  onDelete={this.deleteItem}
-                 onRise = {this.onRise}
-                 onIncrease = {this.onIncrease}/>
+                 onProp = {this.onProp}
+                 />
               </div>
               <div >
                 <EmployeesAddForm
