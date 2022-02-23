@@ -15,7 +15,9 @@ class App extends Component{
         {name: "James" , salary: 800 , increase: false, rise: true, id: 1},
         {name: "Sergey" , salary: 5000 , increase: true, rise: false, id: 2},
         {name: "Roman" , salary: 3000 , increase: false, rise: false, id: 3}
-      ]
+      ],
+     search: '',
+     filter: 'all'
     }
     this.maxId = 4;
     this.all = this.state.data.length
@@ -24,7 +26,7 @@ class App extends Component{
   onProp = (id, prop) => {
    this.setState(({data}) => ({
      data: data.map(item => {
-       if (item.id==id) {
+       if (item.id===id) {
          return {...item, [prop]: !item[prop]}
        }
        return item;
@@ -56,11 +58,58 @@ class App extends Component{
    })
   }
 
+  onSearch = (item, search) => {
+    if (search.length === 0){return item};
+  
+    return item.filter(item => {
+      return item.name.indexOf(search) > -1})
+  }
+
+  onUpdateSearch = (search) => {
+    this.setState({search});
+  }
+
+  filterShow = (items, filter) => {
+    switch (filter) {
+      case 'riseFilter':
+        return items.filter(item => item.rise);
+      case 'more1000':
+        return items.filter(item=> item.salary > 1000);
+      case 'all':
+        return items
+    }
+  }
+
+
+  // allFilter = () => {
+  //   this.setState(() => {
+  //     return {filter: 'all'}
+  //   })
+  // }
+  
+  // onRiseFilter = () => {
+  // // e.target.className = 'btn btn-secondary';
+  // this.setState(() => {
+  //   return {filter: 'riseFilter'}
+  // })
+  // }
+  
+  // moreThen1000 = () => {
+  //   // e.target.className = 'btn btn-secondary';
+  //   this.setState(() => {
+  //     return {filter: 'more1000'}
+  //   })
+  // }
+onFilterClick = (filter) => {
+this.setState({filter})
+}
 
   render() {
   const amountAll = this.state.data.length;
   const amountRise = this.state.data.filter(item => item.rise).length;
-  const{data} = this.state;
+  const{data, search, filter} = this.state;
+  const visibleData = this.filterShow(this.onSearch(data, search), filter)
+
 
         return (
           <div className="App">
@@ -69,12 +118,14 @@ class App extends Component{
               amountAll={amountAll}
               amountRise={amountRise}/>
               <div>
-                <SearchPanel/>
-                <AppFilter/>
+                <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
+                <AppFilter 
+                onFilterClick={this.onFilterClick}
+                 filter={filter}/>
               </div>
               <div>
                  <EmployeesList 
-                 data={data}
+                 data={visibleData}
                  onDelete={this.deleteItem}
                  onProp = {this.onProp}
                  />

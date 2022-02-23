@@ -4,7 +4,7 @@ import './employees-list.css';
 
 const EmployeesList = ({data, onDelete, onProp}) => {
 
-    const elements = data.map(item => {
+    const elements = data?.map(item => {
         const {id, ...itemProps} = item;
         return (
            
